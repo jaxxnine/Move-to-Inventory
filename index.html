@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Visual Inventory</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+      text-align: center;
+      padding: 30px;
+      background-image: url('7ee8afd6ab0e99146a1b2651886c6cf1.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: #ffffff;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    p {
+      color: white;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .item {
+      width: 80px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .item:hover {
+      transform: scale(1.1);
+    }
+
+    #inventory-box {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      display: none;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    #inventory-items {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    #toggle-btn {
+      padding: 10px 20px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    #toggle-btn:hover {
+      transform: rotate(-3deg) scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧺 Demo</h1>
+  <p>Click items to move them to your inventory and back!</p>
+
+  <!-- World items -->
+  <div id="world-items" class="container">
+    <img src="https://static.thenounproject.com/png/4723125-200.png" alt="Sword" class="item" onclick="moveToInventory(this)" data-name="Sword">
+    <img src="https://static.thenounproject.com/png/5631520-200.png" alt="Shield" class="item" onclick="moveToInventory(this)" data-name="Shield">
+    <img src="https://static.thenounproject.com/png/1450847-200.png" alt="Potion" class="item" onclick="moveToInventory(this)" data-name="Potion">
+    <img src="https://static.thenounproject.com/png/1852788-200.png" alt="Gold" class="item" onclick="moveToInventory(this)" data-name="Gold">
+  </div>
+
+  <!-- Toggle Inventory -->
+  <button id="toggle-btn" onclick="toggleInventory()">Show Inventory</button>
+
+  <!-- Inventory container -->
+  <div id="inventory-box">
+    <h3>Your Inventory:</h3>
+    <div id="inventory-items" class="container"></div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const worldContainer = document.getElementById('world-items');
+    const inventoryContainer = document.getElementById('inventory-items');
+
+    function toggleInventory() {
+      const box = document.getElementById('inventory-box');
+      box.style.display = (box.style.display === 'none' || box.style.display === '') ? 'block' : 'none';
+    }
+
+    function moveToInventory(img) {
+      // Remove from world and add to inventory
+      inventoryContainer.appendChild(img);
+
+      // Add confetti
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.6 }
+      });
+
+      // Update onclick to go back
+      img.onclick = function () {
+        moveToWorld(this);
+      };
+    }
+
+    function moveToWorld(img) {
+      // Remove from inventory and add back to world
+      worldContainer.appendChild(img);
+
+      // Update onclick to go to inventory again
+      img.onclick = function () {
+        moveToInventory(this);
+      };
+    }
+  </script>
+
+</body>
+</html>
